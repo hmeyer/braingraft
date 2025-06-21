@@ -1,41 +1,34 @@
 # braingraft
 Compiler from LLVM-IR to https://github.com/hmeyer/brainstem
 
-## Documentation
+## Prerequisites
 
-### Building the C++ examples
-
-To build the C++ examples into LLVM-IR, you need to have `clang++` installed. 
-On a Debian-based system, you can install the LLVM and Polly dependencies with the following command:
+On a Debian-based system, you can install the required dependencies with the following command:
 ```bash
-sudo apt-get install -y clang
+sudo apt-get update && sudo apt-get install -y clang llvm-18 libpolly-18-dev libzstd-dev
 ```
 
-You can then run the following command:
+## Building the C++ examples
+
+To build the C++ examples into LLVM-IR, run the following command:
 
 ```bash
-.examples/build.sh
+./examples/build-examples.sh
 ```
 
 This will generate the `examples/*.ll` files containing the LLVM-IR representation of the C++ code.
 
-### Building the Project
+## Building the Project
 
-To build the `braingraft` library, you will need to have the following dependencies installed:
-* Rust and Cargo
-* Clang
-* LLVM 18
-* Polly for LLVM 18
-
-On a Debian-based system, you can install the LLVM and Polly dependencies with the following command:
-```bash
-sudo apt-get install -y llvm-18 libpolly-18-dev
-```
-
-The project is configured to automatically find the LLVM installation, so no environment variables are needed.
-
-Finally, you can build the project using `cargo`:
+You can build the project using `cargo`:
 
 ```bash
 cargo build
+```
+
+## Running the compiler
+
+To run the compiler on one of the examples:
+```bash
+cargo run -- examples/hello.ll
 ```
