@@ -1,14 +1,15 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
+use llvm_ir::Module;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+pub fn compile_llvmir(llvm_ir: &str) -> String {
+    match Module::from_ir_str(llvm_ir) {
+        Ok(_module) => {
+            println!("Successfully parsed LLVM-IR");
+        }
+        Err(e) => {
+            println!("Failed to parse LLVM-IR: {}", e);
+        }
     }
+    String::new()
 }
+
