@@ -9,6 +9,15 @@ pub fn compile(llvm_ir: &str) -> Result<String> {
 
     for function in &module.functions {
         println!("Found function: {}", function.name);
+        println!("  Return type: {:?}", function.return_type);
+        if function.parameters.is_empty() {
+            println!("  Parameters: None");
+        } else {
+            println!("  Parameters:");
+            for param in &function.parameters {
+                println!("    - {}: {:?}", param.name, param.ty);
+            }
+        }
     }
 
     Ok(String::new())
