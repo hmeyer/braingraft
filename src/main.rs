@@ -19,7 +19,14 @@ fn main() {
         }
     };
 
-    let output = compile(&llvm_ir);
-    // The compiled code will be output here in the future
-    println!("Compilation result:\n{}", output);
+    match compile(&llvm_ir) {
+        Ok(output) => {
+            // The compiled code will be output here in the future
+            println!("Compilation result:\n{}", output);
+        }
+        Err(e) => {
+            eprintln!("Compilation failed: {:?}", e);
+            process::exit(1);
+        }
+    }
 }
