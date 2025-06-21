@@ -3,9 +3,14 @@ use llvm_ir::Module;
 
 
 pub fn compile(llvm_ir: &str) -> Result<String> {
-    Module::from_ir_str(llvm_ir)
+    let module = Module::from_ir_str(llvm_ir)
         .map_err(|e| anyhow!(e))
         .context("Failed to parse LLVM-IR")?;
+
+    for function in &module.functions {
+        println!("Found function: {}", function.name);
+    }
+
     Ok(String::new())
 }
 
