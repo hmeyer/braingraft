@@ -41,7 +41,7 @@ pub fn compile_block(
             },
             Instruction::Alloca(a) => {
                 let alloca_output = compile_alloca(a)?;
-                output.push_str(&alloca_output);
+                output.push_str(&format!("  {}", alloca_output));
             }
 
             instr => {

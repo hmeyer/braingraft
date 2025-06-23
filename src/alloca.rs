@@ -3,8 +3,8 @@ use llvm_ir::{instruction::Alloca, Constant, Name, Operand, Type};
 
 fn compile_name(name: &Name) -> String {
     match name {
-        Name::Name(n) => format!("named_{}", n),
-        Name::Number(n) => format!("anonymous_{}", n),
+        Name::Name(n) => format!("var_{}", n),
+        Name::Number(n) => format!("anonymous_var_{}", n),
     }
 }
 
