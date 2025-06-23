@@ -1,7 +1,7 @@
+use braingraft::compile;
 use std::env;
 use std::fs;
 use std::process;
-use braingraft::compile;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
