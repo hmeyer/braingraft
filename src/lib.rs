@@ -3,6 +3,7 @@ use llvm_ir::Module;
 
 mod alloca;
 mod block;
+mod call;
 mod function;
 use function::compile_function;
 

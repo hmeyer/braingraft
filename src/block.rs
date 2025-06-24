@@ -1,7 +1,7 @@
 use crate::alloca::compile_alloca;
+use crate::call::compile_call;
 use anyhow::{anyhow, Result};
-use either::Either;
-use llvm_ir::{Constant, Function, Instruction, Name, Operand, Terminator};
+use llvm_ir::{Function, Instruction, Name, Terminator};
 use std::collections::HashSet;
 
 pub fn compile_block(
@@ -22,23 +22,10 @@ pub fn compile_block(
 
     for instruction in &block.instrs {
         match instruction {
-            Instruction::Call(call) => match &call.function {
-                Either::Right(Operand::ConstantOperand(cref)) => match cref.as_ref() {
-                    Constant::GlobalReference { name, .. } => {
-                        output.push_str(&format!("  call @{}\n", name));
-                    }
-                    operand => {
-                        let formatted = format!("{:?}", operand);
-                        let type_name = formatted.split('(').next().unwrap_or("").trim();
-                        println!("Unhandled constant operand type: {}", type_name);
-                    }
-                },
-                operand => {
-                    let formatted = format!("{:?}", operand);
-                    let type_name = formatted.split('(').next().unwrap_or("").trim();
-                    println!("Unhandled call function type: {}", type_name);
-                }
-            },
+            Instruction::Call(call) => {
+                let call_output = compile_call(call)?;
+                output.push_str(&call_output);
+            }
             Instruction::Alloca(a) => {
                 let alloca_output = compile_alloca(a)?;
                 output.push_str(&format!("  {}", alloca_output));
@@ -47,7 +34,7 @@ pub fn compile_block(
             instr => {
                 let formatted = format!("{:?}", instr);
                 let type_name = formatted.split('(').next().unwrap_or("").trim();
-                println!("Unhandled instruction type: {}", type_name);
+                eprintln!("Unhandled instruction type: {}", type_name);
             }
         }
     }
@@ -60,14 +47,14 @@ pub fn compile_block(
             compile_block(function, &br.dest, output, visited)?;
         }
         Terminator::CondBr(cond_br) => {
-            println!("Unhandled condition: {:?}", cond_br.condition);
+            eprintln!("Unhandled condition: {:?}", cond_br.condition);
             compile_block(function, &cond_br.true_dest, output, visited)?;
             compile_block(function, &cond_br.false_dest, output, visited)?;
         }
         term => {
             let formatted = format!("{:?}", term);
             let type_name = formatted.split('(').next().unwrap_or("").trim();
-            println!("Unhandled terminator type: {}", type_name);
+            eprintln!("Unhandled terminator type: {}", type_name);
         }
     }
 
