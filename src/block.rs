@@ -1,6 +1,6 @@
 use crate::alloca::compile_alloca;
 use crate::call::compile_call;
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use llvm_ir::{Function, Instruction, Name, Terminator};
 use std::collections::HashSet;
 
@@ -24,7 +24,7 @@ pub fn compile_block(
         match instruction {
             Instruction::Call(call) => {
                 let call_output = compile_call(call)?;
-                output.push_str(&call_output);
+                output.push_str(&format!("  {}", &call_output));
             }
             Instruction::Alloca(a) => {
                 let alloca_output = compile_alloca(a)?;

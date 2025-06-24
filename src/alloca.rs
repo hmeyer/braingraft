@@ -1,12 +1,6 @@
-use anyhow::{bail, Result};
-use llvm_ir::{instruction::Alloca, Constant, Name, Operand, Type};
-
-fn compile_name(name: &Name) -> String {
-    match name {
-        Name::Name(n) => format!("var_{}", n),
-        Name::Number(n) => format!("anonymous_var_{}", n),
-    }
-}
+use crate::name::compile_name;
+use anyhow::{Result, bail};
+use llvm_ir::{Constant, Operand, Type, instruction::Alloca};
 
 pub fn compile_alloca(alloca: &Alloca) -> Result<String> {
     let mut output = String::new();

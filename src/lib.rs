@@ -1,10 +1,11 @@
-use anyhow::{anyhow, Context, Result};
+use anyhow::{Context, Result, anyhow};
 use llvm_ir::Module;
 
 mod alloca;
 mod block;
 mod call;
 mod function;
+mod name;
 use function::compile_function;
 
 struct CompiledFunction {
