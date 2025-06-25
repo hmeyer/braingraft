@@ -69,6 +69,6 @@ pub fn compile_alloca(alloca: &Alloca) -> Result<String> {
     if let Some(array_size) = maybe_array_size {
         output.push_str(&format!("[{}]", array_size));
     }
-    output.push_str(";\n");
+    output.push_str(";");
     Ok(output)
 }

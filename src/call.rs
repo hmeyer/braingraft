@@ -68,7 +68,7 @@ pub fn compile_call(call: &Call) -> Result<String> {
         .collect::<Vec<_>>()
         .join(", ");
 
-    output.push_str(&format!("{}({});\n", name, arguments));
+    output.push_str(&format!("{}({});", name, arguments));
 
     Ok(output)
 }
