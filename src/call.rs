@@ -18,10 +18,10 @@ fn compile_argument(operand: &Operand, attrs: &[ParameterAttribute]) -> String {
         Operand::ConstantOperand(cref) => match cref.as_ref() {
             Constant::GlobalReference { name, ty } => compile_name(name),
             Constant::Int { bits, value, .. } => {
-                if *bits > MAX_BITS {
+                if *bits > MAX_BITS && *value > (1 << MAX_BITS) - 1 {
                     eprintln!(
-                        "Integer constant with more than {} bits is not supported: {}",
-                        MAX_BITS, bits
+                        "Integer constant with more than {} bits is not supported: {} ({} bits)",
+                        MAX_BITS, value, bits
                     );
                 }
                 format!("{}", value)
