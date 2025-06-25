@@ -8,6 +8,8 @@ mod function;
 mod name;
 use function::compile_function;
 
+const MAX_BITS: u32 = 32;
+
 struct CompiledFunction {
     name: String,
     assembly: String,

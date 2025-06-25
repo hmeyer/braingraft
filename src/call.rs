@@ -1,3 +1,4 @@
+use crate::MAX_BITS;
 use crate::name::compile_name;
 use anyhow::Result;
 use either::Either;
@@ -16,6 +17,15 @@ fn compile_argument(operand: &Operand, attrs: &[ParameterAttribute]) -> String {
         Operand::LocalOperand { name, ty } => compile_name(name),
         Operand::ConstantOperand(cref) => match cref.as_ref() {
             Constant::GlobalReference { name, ty } => compile_name(name),
+            Constant::Int { bits, value, .. } => {
+                if *bits > MAX_BITS {
+                    eprintln!(
+                        "Integer constant with more than {} bits is not supported: {}",
+                        MAX_BITS, bits
+                    );
+                }
+                format!("{}", value)
+            }
             _ => {
                 eprintln!("Unsupported constant operand: {}", cref);
                 String::new()

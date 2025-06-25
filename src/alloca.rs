@@ -1,3 +1,4 @@
+use crate::MAX_BITS;
 use crate::name::compile_name;
 use anyhow::{Result, bail};
 use llvm_ir::{Constant, Operand, Type, instruction::Alloca};
@@ -6,9 +7,10 @@ pub fn compile_alloca(alloca: &Alloca) -> Result<String> {
     let mut output = String::new();
     let maybe_array_size = match alloca.allocated_type.as_ref() {
         Type::IntegerType { bits, .. } => {
-            if *bits > 32 {
+            if *bits > MAX_BITS {
                 bail!(
-                    "Alloca with integer type larger than 32 bits is not supported: {}",
+                    "Alloca with integer type larger than {} bits is not supported: {}",
+                    MAX_BITS,
                     bits
                 );
             }
@@ -20,9 +22,10 @@ pub fn compile_alloca(alloca: &Alloca) -> Result<String> {
             num_elements,
         } => {
             if let Type::IntegerType { bits, .. } = element_type.as_ref() {
-                if *bits > 32 {
+                if *bits > MAX_BITS {
                     bail!(
-                        "Alloca with array element type larger than 32 bits is not supported: {}",
+                        "Alloca with array element type larger than {} bits is not supported: {}",
+                        MAX_BITS,
                         bits
                     );
                 }
