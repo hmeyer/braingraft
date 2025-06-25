@@ -1,5 +1,6 @@
 use crate::alloca::compile_alloca;
 use crate::call::compile_call;
+use crate::load::compile_load;
 use anyhow::{Result, anyhow};
 use llvm_ir::{Function, Instruction, Name, Terminator};
 use std::collections::HashSet;
@@ -23,12 +24,13 @@ pub fn compile_block(
     for instruction in &block.instrs {
         match instruction {
             Instruction::Call(call) => {
-                let call_output = compile_call(call)?;
-                output.push_str(&format!("  {}", &call_output));
+                output.push_str(&compile_call(call)?);
             }
             Instruction::Alloca(a) => {
-                let alloca_output = compile_alloca(a)?;
-                output.push_str(&format!("  {}", alloca_output));
+                output.push_str(&compile_alloca(a)?);
+            }
+            Instruction::Load(load) => {
+                output.push_str(&compile_load(load)?);
             }
 
             instr => {

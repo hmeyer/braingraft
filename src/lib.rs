@@ -5,6 +5,7 @@ mod alloca;
 mod block;
 mod call;
 mod function;
+mod load;
 mod name;
 use function::compile_function;
 
