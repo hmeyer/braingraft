@@ -1,6 +1,7 @@
 use crate::alloca::compile_alloca;
 use crate::call::compile_call;
 use crate::load::compile_load;
+use crate::store::compile_store;
 use anyhow::{Result, anyhow};
 use llvm_ir::{Function, Instruction, Name, Terminator};
 use std::{collections::HashSet, vec};
@@ -31,6 +32,9 @@ pub fn compile_block(
             }
             Instruction::Load(load) => {
                 output.push(compile_load(load)?);
+            }
+            Instruction::Store(store) => {
+                output.push(compile_store(store)?);
             }
 
             instr => {

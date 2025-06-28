@@ -6,6 +6,7 @@ mod block;
 mod call;
 mod function;
 mod load;
+mod store;
 mod name;
 use function::compile_function;
 
